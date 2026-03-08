@@ -1,4 +1,4 @@
-# Symulacja Monte Carlo prawdopodo bieństwa bankructwa portfela ubezpieczeń na życie
+# Symulacja Monte Carlo prawdopodobieństwa bankructwa portfela ubezpieczeń na życie
 Projekt analizuje prawdopodobieństwo bankructwa portfela ubezpieczeń na życie w zależności od:
 - Wielkości portfela
 - Formy narzutu finansowego
