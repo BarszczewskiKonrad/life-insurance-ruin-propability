@@ -1,5 +1,37 @@
+"""
+Symulacja Monte Carlo prawdopodobieństwa bankructwa portfela ubezpieczeń na życie.
+
+Model analizuje jak na prawdopobieństwo bankructwa wpływa:
+    - wielkość portfela
+    - forma narzutu finansowego
+    - wielkość narzutu finansowego
+
+Autor: Konrad Barszczewski
+"""
+
 from Insurance_Model import InsurancePortfolio
 def MonteCarlo(n_simulations,portfolio,inicial_capital):
+    """
+    Wielokrotnie wykonuje symulacje przebiegu stanu porfela ubezpieczeń na życie
+
+    Parametry:
+    ---------
+    n_simulations : int
+        Ilość symulacji do wykonania
+    portfolio: InsurancePortfolio
+        Portfel ubezpieczeń na życie
+    inicial_capital: float
+        Początkowy kapitał danego portfela
+
+    Zwraca:
+    -------
+    histories : list
+        tablica z przebiegami stanu portfela w czasie
+    final_capitals : list
+        lista końcowych kapitałów w portfelu
+    prob_bankruptcy: float
+        Oszacowane prawdopodobieństwo bankructwa danego portfela przy ustalonym kapitale początkowym
+    """
     final_capitals = []
     histories = []
     bankrupt = 0
@@ -29,6 +61,38 @@ def Bankruptcy_Prob(
         loading_type,
 
 ):
+    """
+    Wykonuje symulacje Monte Carlo dla określonych parametrów porfela, formy narzutu, oraz współczynnika narzutu
+
+    Parametry:
+    ----------
+    n : int
+        Ilość klientów w danym portfelu
+    alpha : float
+        Współczynnik narzutu
+    n_simulations : int
+        Ilość symulacji Monte Carlo
+    interest_rate : float
+        Techniczna stopa procentowa
+    clients_age: int
+        Wiek klientów w momencie zawarcia umowy
+    sum_assured : float
+        Wysokość świadczenia wypłacanego na koniec roku śmierci
+    filepath : str
+        Ścieżka do pliku excela z tablicami trwania życia
+    sheet_name : str
+        Nazwa arkusza z TTŻ
+    loading_type : str
+        Forma narzutu finansowego:
+        - Jeżeli "proportional" to Expected Value * alpha
+        - Jeżeli sigma to pierwiastek z Variance * alpha
+
+    Zwraca:
+    --------
+    results : float
+        Oszacowane prawdopodobieństwo bankructwa danego portfela przy danej formie narzutu i parametrze alpha
+        
+    """
     portfolio = InsurancePortfolio(
         n,
         sum_assured,
@@ -61,6 +125,39 @@ def bankruptcy_vs_n(
         loading_type,
         alpha_or_n
 ):
+    """
+    Wyznacza prawdopodobieństwa bankructwa portfela dla różnych n lub alpha 
+
+    Parametry:
+    ----------
+    n_values : int / list
+        Ilość klientów w danym portfelu
+    alpha_values : float / list
+        Współczynnik narzutu
+    n_simulations : int
+        Ilość symulacji Monte Carlo
+    interest_rate : float
+        Techniczna stopa procentowa
+    clients_age: int
+        Wiek klientów w momencie zawarcia umowy
+    sum_assured : float
+        Wysokość świadczenia wypłacanego na koniec roku śmierci
+    filepath : str
+        Ścieżka do pliku excela z tablicami trwania życia
+    sheet_name : str
+        Nazwa arkusza z TTŻ
+    loading_type : str
+        Forma narzutu finansowego:
+        - Jeżeli "proportional" to Expected Value * alpha
+        - Jeżeli sigma to pierwiastek z Variance * alpha
+    alpha_or_n : str
+        Wartość po której zmianie badamy prawdopodobieństwo bankructwa
+    Zwraca:
+    --------
+    propabilities : list
+           Lista oszacowanych prawdopodobieństw bankructwa danego portfela przy danej formie narzutu i parametrze alpha
+        
+    """
     propabilities = []
     if alpha_or_n == "n":
         for n in n_values:
