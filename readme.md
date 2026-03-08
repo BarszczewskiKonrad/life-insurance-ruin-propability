@@ -3,6 +3,7 @@ Projekt analizuje prawdopodobieństwo bankructwa portfela ubezpieczeń na życie
 - Wielkości portfela
 - Formy narzutu finansowego
 - Współczynnika narzutu finansowego
+
 Model jest oparty na tablicach trwania życia oraz symulacjach Monte Carlo
 
 ---
