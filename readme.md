@@ -13,7 +13,7 @@ Przedmiotem analizy są portfele ubezpieczeń na życie z następującymi zało�
 - Wysokość świadczenia : 1000 zł
 - Stała techniczna stopa procentowa $i = 5\$%
 - Polskie tablice trwania życia (GUS 2022)
-- maksymalny wiek życia : 100 lat
+- maksymalny czas trwania życia : 100 lat
 - Ubezpieczyciel otrzymuje **jednorazową płatność w momencie zawarcia umowy**
 
 ---
