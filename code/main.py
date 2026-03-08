@@ -1,14 +1,31 @@
+"""
+Symulacja Monte Carlo prawdopodobieństwa bankructwa portfela ubezpieczeń na życie.
+
+Model analizuje jak na prawdopobieństwo bankructwa wpływa:
+    - wielkość portfela
+    - forma narzutu finansowego
+    - wielkość narzutu finansowego
+
+Autor: Konrad Barszczewski
+"""
+
 from plots import plot_paths, plot_histogram, plot_bank_prob
 from MonteCarlo import MonteCarlo,Bankruptcy_Prob,bankruptcy_vs_n
 from Insurance_Model import InsurancePortfolio
 
 
 def main():
+    """
+    Parametry wspólne dla wszystkich portfeli
+    """
     sum_assured=1000
     interest_rate=0.05
     filepath = "C:/Users/konra/OneDrive/Pulpit/MUZ_PR/tablice_trwania_zycia_w_latach_1990-2023.xlsx"
     sheet = "2022"
     clients_age = 30
+    """
+    Trzy portfele różniące się liczbą klientów, odpowiednio : n = 10,1000,100000
+    """
     Portfolio1 = InsurancePortfolio(
         n_clients = 10,
         Sum_assured = sum_assured,
@@ -33,9 +50,18 @@ def main():
         filepath=filepath,
         sheet_name=sheet
     )
+    """
+    3 formy narzutu:
+        - brak narzutu
+        - proporcjonalny z parametrem alpha = 0.1
+        - sigma z parametrem alpha = 0.15
+    """
     Premium1 = Portfolio1.Expected_Value()
     Premium2 = Portfolio1.Expected_Value() * 1.1
     Premium3= Portfolio2.Expected_Value() + (Portfolio2.Variance() ** 0.5)  * 0.15
+    """
+    listy ilości klientów n = (100,200,...) oraz parametru alpha alpha = (0.00,0.01,...) 
+    """
     n_list = []
     for i in range(100):
         n_list.append(100 + i * 100)
@@ -43,6 +69,9 @@ def main():
     for i in range(40):
         alpha_list.append(i * 0.01)
     n_sim = 5000
+    """
+    Symulacja dla każdego z trzech portfeli i każdej formy narzutu
+    """
     result1_1 = MonteCarlo(
         n_simulations = n_sim,
         portfolio = Portfolio1,
@@ -104,6 +133,9 @@ def main():
     plot_histogram(result3_3["final_capitals"], 1,
                    "C:/Users/konra/OneDrive/Pulpit/MUZ_PR/Wykresy/n100000_alphasigma015_hist.png")
 
+    """
+    Symulacja prawdopodobieństwa bankructa dla zmiennych n i narzutu w formie sigma z parametrem aplha = 0.15
+    """
     results4_1 = bankruptcy_vs_n(
         n_values = n_list,
         alpha_values = 0.15,
@@ -117,6 +149,10 @@ def main():
         alpha_or_n = "n"
     )
     plot_bank_prob(results4_1,n_list,"n",1,"C:/Users/konra/OneDrive/Pulpit/MUZ_PR/Wykresy/bankrupcy_vs_n_alphaprop015.png")
+
+    """
+    Symulacja prawdopobieństwa bankructwa dla zmiennych n i narzutu w formie proportional z parametrem alpha = 0.1
+    """
 
     results4_2 = bankruptcy_vs_n(
         n_values = n_list,
@@ -132,6 +168,9 @@ def main():
     )
     plot_bank_prob(results4_2,n_list,"n",1,"C:/Users/konra/OneDrive/Pulpit/MUZ_PR/Wykresy/bankrupcy_vs_n_alphasigma01.png")
 
+    """
+    Symulacje dla zmiennych alpha, przy n= 100, 1000 i formach narzutu sigma lub proportional
+    """
     results5_1 = bankruptcy_vs_n(
         n_values = 100,
         alpha_values = alpha_list,
